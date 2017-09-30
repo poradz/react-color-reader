@@ -1,0 +1,15 @@
+.color-container {
+  height: 200px;
+  width: 200px;
+  border: solid 2px lightgrey;
+  border-radius: 20px;
+}
+.color {
+
+}
+.white {
+	background: #cccccc;
+}
+.black {
+	background: #333333;
+}
