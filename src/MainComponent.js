@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './MainComponent.css';
 
 class MainComponent extends React.Component {
@@ -23,15 +22,15 @@ class MainComponent extends React.Component {
   }
 
   isRgb() {
-    return this.state.color.substring(0, 3) == 'rgb';
+    return this.state.color.substring(0, 3) ==='rgb';
   }
 
   isHsl() {
-    return this.state.color.substring(0, 3) == 'hsl';
+    return this.state.color.substring(0, 3) === 'hsl';
   }
 
   isHex() {
-    return this.state.color.substring(0, 1) == '#';
+    return this.state.color.substring(0, 1) === '#';
   }
 
   applyColor() {
@@ -68,11 +67,13 @@ class MainComponent extends React.Component {
   }
   
   rgbToHsl(r, g, b){
-    r /= 255, g /= 255, b /= 255;
+    r /= 255; 
+    g /= 255;
+    b /= 255;
     let max = Math.max(r, g, b), min = Math.min(r, g, b);
     let h, s, l = (max + min) / 2;
 
-    if(max == min){
+    if(max === min){
         h = s = 0; // achromatic
     }else{
         let d = max - min;
@@ -81,6 +82,7 @@ class MainComponent extends React.Component {
             case r: h = (g - b) / d + (g < b ? 6 : 0); break;
             case g: h = (b - r) / d + 2; break;
             case b: h = (r - g) / d + 4; break;
+            default: alert('error');
         }
         h /= 6;
     }
@@ -91,15 +93,13 @@ class MainComponent extends React.Component {
     let formated = this.formatColor(color)
     formated = formated.split('%').join('');
     formated = formated.split(',').map(Number);
-    console.log(formated);
     return func(formated[0], formated[1], formated[2]);
   }
 
   hexToRgb(hex) {
     if (hex.length === 4){
       let temp = hex;
-      hex = "#" + `${temp.charAt(1)}${temp.charAt(1)}${temp.charAt(2)}${temp.charAt(2)}${temp.charAt(3)}${temp.charAt(3)}`;
-      console.log(hex); `${5}${6}`
+      hex = `#${temp.charAt(1)}${temp.charAt(1)}${temp.charAt(2)}${temp.charAt(2)}${temp.charAt(3)}${temp.charAt(3)}`;
     }
     let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? "rgb(" + parseInt(result[1], 16) + ", " + parseInt(result[2], 16) + ", " + parseInt(result[3], 16) + ")" : null;
@@ -113,8 +113,7 @@ class MainComponent extends React.Component {
     //s = s.toFixed(2);
     l = l / 100;
     //l = l.toFixed(2);
-    console.log(h, s, l);
-  if (s == 0) {
+  if (s === 0) {
     r = g = b = l; // achromatic
   } else {
     function hue2rgb(p, q, t) {
@@ -190,7 +189,7 @@ class MainComponent extends React.Component {
               name="color"
               placeholder="Type color in rgb, hex or hsl!" 
               pattern="^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$|rgb[(]([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5]),\s([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5]),\s([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5])[)]|hsl[(]([0-9]{1,2}|[0-2][0-9]{1,2}|[3][0-5][0-9]|[3][6][0]),\s([0-9]{1,2}%|[0-9]{1,2}%|[1][0][0]%),\s([0-9]{1,2}%|[0-9]{1,2}%|[1][0][0]%)[)]"
-              title='"rgb(<number from 0 to 255>, <number from 0 to 255>, <number from 0 to 255>)" or "#" + 3 or 6 * "<letter from a-f or number>" or "hsl(< Hue in number from 0 to 360>, <saturation in percents>, <lightness in percents>)'
+              title='"rgb(<number from 0 to 255>, <number from 0 to 255>, <number from 0 to 255>)" or "#" + 3 or 6 * "<letter from a-f or number>" or "hsl(< Hue in number from 0 to 360>, <saturation in percents>, <lightness in percents>)"'
               />
               <div className="col-xs-3 form-group">
                 <button className="btn primary" type="submit" value="submit"><span className="color">SUBMIT</span></button>
