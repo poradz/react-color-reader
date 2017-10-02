@@ -5,16 +5,16 @@ class MainComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {color: ''};
-    this.handleClick = this.handleClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.rgbToHex = this.rgbToHex.bind(this);
   }
   
   componentDidMount() {
-    this.applyColor();
+    this.setColor();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.applyColor();
+    this.setColor();
   }
 
   formatColor(ary) {
@@ -33,16 +33,12 @@ class MainComponent extends React.Component {
     return this.state.color.substring(0, 1) === '#';
   }
 
-  applyColor() {
+  setColor() {
     const color = this.state.color;
     document.querySelector('.color-container')
     .style.background = color;
     document.querySelector('.color')
     .style.color = color;
-  }
-  
-  handleClick() {
-    this.setState({ color: this.chooseColor() });
   }
 
   handleSubmit(e){
@@ -192,14 +188,14 @@ class MainComponent extends React.Component {
               title='"rgb(<number from 0 to 255>, <number from 0 to 255>, <number from 0 to 255>)" or "#" + 3 or 6 * "<letter from a-f or number>" or "hsl(< Hue in number from 0 to 360>, <saturation in percents>, <lightness in percents>)"'
               />
               <div className="col-xs-3 form-group">
-                <button className="btn primary" type="submit" value="submit"><span className="color">SUBMIT</span></button>
+                <button className="btn primary" type="submit" value="submit"><span>SUBMIT</span></button>
               </div>            
             </div>
           </div>
         </form>
         <div className="color-container col-xs-6"></div>
         <div className="col-xs-6">
-          <h3 className="color">
+          <h3>
           { this.showRgb() }
             <br />
           { this.showHex() }
