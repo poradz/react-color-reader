@@ -118,7 +118,6 @@ class App extends React.Component {
     r = hue2rgb(p, q, h + 1/3);
     g = hue2rgb(p, q, h);
     b = hue2rgb(p, q, h - 1/3);
-    console.log(r, g, b);
   }
   r = parseInt(Math.max(Math.min(r * 256, 255), 0), 10);
   g = parseInt(Math.max(Math.min(g * 256, 255), 0), 10);
