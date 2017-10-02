@@ -1,7 +1,8 @@
 import React from 'react';
-import './MainComponent.css';
+import './App.css';
+import Form from './Components/Form';
 
-class MainComponent extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {color: ''};
@@ -39,16 +40,6 @@ class MainComponent extends React.Component {
     .style.background = color;
     document.querySelector('.color')
     .style.color = color;
-  }
-
-  handleSubmit(e){
-    e.preventDefault();
-    if(this.refs.color.value === '') {
-      alert('Write your color in correct format.')
-    } 
-    else {
-      this.setState({ color: this.refs.color.value });
-    }
   }
 
   componentToHex(c) {
@@ -171,14 +162,21 @@ class MainComponent extends React.Component {
     }
   }
 
+  handleSubmit(e){
+    e.preventDefault();
+    if(this.refs.color.value === '') {
+      alert('Write your color in correct format.')
+    } 
+    else {
+      this.setState({ color: this.refs.color.value });
+    }
+  }
+
   render() {
     return (
       <div className='container'>
         <h2>COLOR READER</h2>
-        <form onSubmit={ this.handleSubmit } id="colorForm" className="form-horizontal">
-          <div className="form-group">
-            <label className="col-xs-3 control-label color">Color</label>
-            <div className="col-xs-6">  
+            <Form onSubmit={ this.handleSubmit }> 
               <input type="text" 
               ref="color" 
               className="form-control" 
@@ -187,12 +185,7 @@ class MainComponent extends React.Component {
               pattern="^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$|rgb[(]([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5]),\s([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5]),\s([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5])[)]|hsl[(]([0-9]{1,2}|[0-2][0-9]{1,2}|[3][0-5][0-9]|[3][6][0]),\s([0-9]{1,2}%|[0-9]{1,2}%|[1][0][0]%),\s([0-9]{1,2}%|[0-9]{1,2}%|[1][0][0]%)[)]"
               title='"rgb(<number from 0 to 255>, <number from 0 to 255>, <number from 0 to 255>)" or "#" + 3 or 6 * "<letter from a-f or number>" or "hsl(< Hue in number from 0 to 360>, <saturation in percents>, <lightness in percents>)"'
               />
-              <div className="col-xs-3 form-group">
-                <button className="btn primary" type="submit" value="submit">SUBMIT</button>
-              </div>            
-            </div>
-          </div>
-        </form>
+            </Form>
         <div className="color-container col-xs-6"></div>
         <div className="col-xs-6">
           <h3>
@@ -208,4 +201,4 @@ class MainComponent extends React.Component {
   }
 }
 
-export default MainComponent;
+export default App;
