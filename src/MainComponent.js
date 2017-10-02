@@ -175,7 +175,7 @@ class MainComponent extends React.Component {
     return (
       <div className='container'>
         <h2>COLOR READER</h2>
-        <form onSubmit={this.handleSubmit.bind(this)} id="colorForm" className="form-horizontal">
+        <form onSubmit={ this.handleSubmit } id="colorForm" className="form-horizontal">
           <div className="form-group">
             <label className="col-xs-3 control-label color">Color</label>
             <div className="col-xs-6">  
@@ -188,7 +188,7 @@ class MainComponent extends React.Component {
               title='"rgb(<number from 0 to 255>, <number from 0 to 255>, <number from 0 to 255>)" or "#" + 3 or 6 * "<letter from a-f or number>" or "hsl(< Hue in number from 0 to 360>, <saturation in percents>, <lightness in percents>)"'
               />
               <div className="col-xs-3 form-group">
-                <button className="btn primary" type="submit" value="submit"><span>SUBMIT</span></button>
+                <button className="btn primary" type="submit" value="submit">SUBMIT</button>
               </div>            
             </div>
           </div>
