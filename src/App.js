@@ -1,13 +1,21 @@
 import React from 'react';
 import './App.css';
-import Form from './Components/Form';
+//import {Form} from './Components/Form';
+//import {Input} from './Components/Input';
+import {InputInstant} from './Components/InputInstant';
+import {Container} from './Components/Container';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {color: ''};
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      color: '',
+    };
+    //this.handleSubmit = this.handleSubmit.bind(this);
     this.rgbToHex = this.rgbToHex.bind(this);
+    this.isLight = this.isLight.bind(this);
+    this.setLightness = this.setLightness.bind(this);
+    this.setColor = this.setColor.bind(this);
   }
   
   componentDidMount() {
@@ -17,30 +25,52 @@ class App extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     this.setColor();
   }
-
-  formatColor(ary) {
-      return ary.substring(4, ary.length - 1);
+  /////////return lightness of hsl//////////
+  isLight(star) {
+    let light = this.formatColor(this.showHsl());
+    light = light.split('%').join('');
+    light = light.split(',').map(Number);
+    return light[2];
   }
-
-  isRgb() {
-    return this.state.color.substring(0, 3) ==='rgb';
-  }
-
-  isHsl() {
-    return this.state.color.substring(0, 3) === 'hsl';
-  }
-
-  isHex() {
-    return this.state.color.substring(0, 1) === '#';
+  ////////set lightness of dom elements
+  setLightness(hue, satur, element){
+    let lightness;
+      if (this.isLight() < 10) {
+        lightness = 10; 
+      }
+      else if (element === "lawn" && this.isLight() > 70) {
+        lightness = 70; 
+      }
+      else if (element === "cloud" && this.isLight() > 90) {
+        lightness = 90; 
+      }
+      else {lightness = this.isLight();}
+      return "hsl("+hue+", "+satur+"%, "+lightness+"%)";
   }
 
   setColor() {
     const color = this.state.color;
-    document.querySelector('.color-container')
-    .style.background = color;
-    document.querySelector('.color')
-    .style.color = color;
+    document.querySelector('.container').style.background = color;
+    document.querySelector('.lawn-radius__child').style.background = color;
+    document.querySelector('.lawn').style.background = this.setLightness(90, 100, "lawn");
+    document.querySelector('.lawn-radius').style.background = this.setLightness(90, 100, "lawn");
+    const cloud = document.getElementsByClassName("cloud");
+    for (let i = cloud.length - 1; i >= 0; i--) {
+      cloud[i].style.background = this.setLightness(205, 85, "cloud");
+    }
+    const stars = document.getElementsByClassName("star");
+    if (this.isLight() > 30) {
+      for (let i = stars.length - 1; i >= 0; i--)
+        stars[i].style.display = "none";
+    } else {
+      for (let i = stars.length - 1; i >= 0; i--) {
+        stars[i].style.background = this.setLightness(60, 100);
+        stars[i].style.display = "inline";
+      }
+    }
   }
+
+///////////////////COLOR NAME CONVERSION LOGIC
 
   componentToHex(c) {
     let hex = c.toString(16);
@@ -76,13 +106,6 @@ class App extends React.Component {
     return "hsl(" + Math.floor(h * 360) + ", " + Math.floor(s * 100) + "%, " + Math.floor(l * 100) + "%)";
   }
 
-  handleRgbAndHslFormat(func, color) {
-    let formated = this.formatColor(color)
-    formated = formated.split('%').join('');
-    formated = formated.split(',').map(Number);
-    return func(formated[0], formated[1], formated[2]);
-  }
-
   hexToRgb(hex) {
     if (hex.length === 4){
       let temp = hex;
@@ -100,17 +123,17 @@ class App extends React.Component {
     //s = s.toFixed(2);
     l = l / 100;
     //l = l.toFixed(2);
-  if (s === 0) {
-    r = g = b = l; // achromatic
-  } else {
-    function hue2rgb(p, q, t) {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1/6) return p + (q - p) * 6 * t;
-      if (t < 1/2) return q;
-      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-      return p;
-    }
+    if (s === 0) {
+      r = g = b = l; // achromatic
+    } else {
+      function hue2rgb(p, q, t) {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+      }
 
     let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
     let p = 2 * l - q;
@@ -118,86 +141,121 @@ class App extends React.Component {
     r = hue2rgb(p, q, h + 1/3);
     g = hue2rgb(p, q, h);
     b = hue2rgb(p, q, h - 1/3);
-  }
+    }
   r = parseInt(Math.max(Math.min(r * 256, 255), 0), 10);
   g = parseInt(Math.max(Math.min(g * 256, 255), 0), 10);
   b = parseInt(Math.max(Math.min(b * 256, 255), 0), 10);
 
   return  "rgb(" + r + ", " + g + ", " + b + ")";
-}
+  }
+
+  formatColor(ary) {
+      return ary.substring(4, ary.length - 1);
+  }
+
+  handleRgbAndHslFormat(func, color) {
+    let formated = this.formatColor(color);
+    formated = formated.split('%').join('');
+    formated = formated.split(',').map(Number);
+    return func(formated[0], formated[1], formated[2]);
+  }
+
+////////////checking type of color using regex//////
+
+  isRgb(col) {
+    //return this.state.color.substring(0, 3) ==='rgb';
+    let re = /rgb[(]([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5]),\s([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5]),\s([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5])[)]/;
+    let ok = re.exec(col);
+    return ok;
+  }
+
+  isHsl(col) {
+    //return this.state.color.substring(0, 3) === 'hsl';
+    let re = /hsl[(]([0-9]{1,2}|[0-2][0-9]{1,2}|[3][0-5][0-9]|[3][6][0]),\s([0-9]{1,2}%|[0-9]{1,2}%|[1][0][0]%),\s([0-9]{1,2}%|[0-9]{1,2}%|[1][0][0]%)[)]/;
+    let ok = re.exec(col);
+    return ok;
+  }
+
+  isHex(col) {
+    //return this.state.color.substring(0, 1) === '#';
+    let re = /^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;
+    let ok = re.exec(col);
+    return ok;
+  }
+
   showRgb(){
-    if (this.isRgb()) {
-      return this.state.color;
+    let col = this.state.color;
+    if (this.isRgb(col)) {
+      // this.setState({ 
+      //   rgb: col
+      // });
+      return col;
     } 
-    else if (this.isHsl()) {
-      return this.handleRgbAndHslFormat(this.hslToRgb, this.state.color);
+    else if (this.isHsl(col)) {
+      return this.handleRgbAndHslFormat(this.hslToRgb, col);
     }
     else {
-      return this.hexToRgb(this.state.color);
+      return this.hexToRgb(col);
     }
   }
 
   showHex(){
-    if (this.isRgb()) {
-      return this.handleRgbAndHslFormat(this.rgbToHex, this.state.color);
+    let col = this.state.color;    
+    if (this.isRgb(col)) {
+      return this.handleRgbAndHslFormat(this.rgbToHex, col);
     } 
-    else if (this.isHsl()) {
-      return this.handleRgbAndHslFormat(this.rgbToHex, this.handleRgbAndHslFormat(this.hslToRgb, this.state.color));
+    else if (this.isHsl(col)) {
+      return this.handleRgbAndHslFormat(this.rgbToHex, this.handleRgbAndHslFormat(this.hslToRgb, col));
     }
     else {
-      return this.state.color;
+      return col;
     }
   }
   
   showHsl(){
-    if (this.isRgb()) {
-      return this.handleRgbAndHslFormat(this.rgbToHsl, this.state.color);
+    let col = this.state.color;
+    if (this.isRgb(col)) {
+      return this.handleRgbAndHslFormat(this.rgbToHsl, col);
     } 
-    else if (this.isHex()) {
-      return this.handleRgbAndHslFormat(this.rgbToHsl, this.hexToRgb(this.state.color));
+    else if (this.isHex(col)) {
+      return this.handleRgbAndHslFormat(this.rgbToHsl, this.hexToRgb(col));
     }
     else {
-      return this.state.color;
+      return col;
     }
   }
 
-  handleSubmit(e){
-    e.preventDefault();
-    if(this.refs.color.value === '') {
-      alert('Write your color in correct format.')
-    } 
-    else {
-      this.setState({ color: this.refs.color.value });
+//Input submit version///////////
+  // handleSubmit(e){
+  //   e.preventDefault();
+  //   if(this.MyColor.value === '') {
+  //     alert('Write your color in correct format.')
+  //   } 
+  //   else {
+  //     this.setState({ backgroundColor: this.MyColor.value });
+  //   }
+  // }
+  // <Form onSubmit={ this.handleSubmit } >
+  //     <Input MyColor={input => this.MyColor = input} />
+  // </Form> 
+
+  handleOnChange(e){
+    let col = this.MyColorInst.value;
+    if (this.isRgb(col) || this.isHex(col) || this.isHsl(col)) {
+      this.setState({ 
+        color: col
+      });
     }
   }
 
   render() {
     return (
-      <div className='container'>
-        <h2>COLOR READER</h2>
-            <Form onSubmit={ this.handleSubmit }> 
-              <input type="text" 
-              ref="color" 
-              className="form-control" 
-              name="color"
-              placeholder="Type color in rgb, hex or hsl!" 
-              pattern="^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$|rgb[(]([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5]),\s([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5]),\s([0-9]{1,2}|[0-1][0-9]{1,2}|[0-2][0-4][0-9]|[2][0-5][0-5])[)]|hsl[(]([0-9]{1,2}|[0-2][0-9]{1,2}|[3][0-5][0-9]|[3][6][0]),\s([0-9]{1,2}%|[0-9]{1,2}%|[1][0][0]%),\s([0-9]{1,2}%|[0-9]{1,2}%|[1][0][0]%)[)]"
-              title='"rgb(<number from 0 to 255>, <number from 0 to 255>, <number from 0 to 255>)" or "#" + 3 or 6 * "<letter from a-f or number>" or "hsl(< Hue in number from 0 to 360>, <saturation in percents>, <lightness in percents>)"'
-              />
-            </Form>
-        <div className="color-container col-xs-6"></div>
-        <div className="col-xs-6">
-          <h3>
-          { this.showRgb() }
-            <br />
-          { this.showHex() }
-            <br />
-          { this.showHsl() }
-          </h3>
-        </div>
-      </div>
+      <Container showRgb={this.showRgb()} showHex={this.showHex()} showHsl={this.showHsl()}>
+          <InputInstant MyColorInst={input => this.MyColorInst = input} onChange={ this.handleOnChange.bind(this) }/>
+      </Container>
     );
   }
 }
 
 export default App;
+

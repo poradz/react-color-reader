@@ -1,5 +1,194 @@
-body {
+body, html {
   margin: 0;
-  padding: 200px;
+  height: 100%;
   font-family: sans-serif;
-}
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box; }
+
+.star {
+  margin: 2.5px 0;
+  position: absolute;
+  display: block;
+  border-right: 5px solid transparent;
+  border-bottom: 3.5px solid #f2f265;
+  border-left: 5px solid transparent;
+  z-index: 1;
+  transition: width 2s linear 1s;
+  -moz-transform: rotate(35deg);
+  -webkit-transform: rotate(35deg);
+  -ms-transform: rotate(35deg);
+  -o-transform: rotate(35deg); }
+  .star:after, .star:before {
+    content: '';
+    position: absolute; }
+  .star:before {
+    top: -2.25px;
+    left: -3.25px;
+    border-bottom: 4px solid;
+    border-bottom-color: inherit;
+    border-left: 1.5px solid transparent;
+    border-right: 1.5px solid transparent;
+    -moz-transform: rotate(-35deg);
+    -webkit-transform: rotate(-35deg);
+    -ms-transform: rotate(-35deg);
+    -o-transform: rotate(-35deg); }
+  .star:after {
+    top: 0.15px;
+    left: -5.25px;
+    border-right: 5px solid transparent;
+    border-bottom: 3.5px solid;
+    border-bottom-color: inherit;
+    border-left: 5px solid transparent;
+    -moz-transform: rotate(-70deg);
+    -webkit-transform: rotate(-70deg);
+    -ms-transform: rotate(-70deg);
+    -o-transform: rotate(-70deg); }
+
+.cloud {
+  width: 175px;
+  height: 60px;
+  background: #f2f9fe;
+  border-radius: 50px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  position: absolute;
+  margin: 60px auto 10px;
+  padding-top: 10px;
+  z-index: 2;
+  text-align: center; }
+  .cloud:after, .cloud:before {
+    content: '';
+    position: absolute;
+    background: inherit;
+    z-index: 2; }
+  .cloud:after {
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    width: 50px;
+    height: 25px;
+    top: -22.5px;
+    left: 25px; }
+  .cloud:before {
+    width: 90px;
+    height: 45px;
+    top: -42.5px;
+    right: 25px;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px; }
+  .cloud__one {
+    top: 60%;
+    left: 10%; }
+  .cloud__two {
+    top: 40%;
+    left: 70%; }
+  .cloud__three {
+    top: 80%;
+    left: 60%; }
+
+.cloud-big {
+  width: 350px;
+  height: 120px;
+  background: #f2f9fe;
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  position: absolute;
+  margin: 120px auto 20px;
+  padding-top: 20px;
+  text-align: center;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+  .cloud-big:after, .cloud-big:before {
+    content: '';
+    position: absolute;
+    background: #f2f9fe;
+    z-index: 3; }
+  .cloud-big:after {
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+    width: 100px;
+    height: 50px;
+    top: -45px;
+    left: 50px; }
+  .cloud-big:before {
+    width: 180px;
+    height: 90px;
+    top: -85px;
+    right: 50px;
+    border-top-left-radius: 200px;
+    border-top-right-radius: 200px; }
+  .cloud-big__one {
+    top: 60%;
+    left: 30%; }
+  .cloud-big__two {
+    top: 40%;
+    left: 50%;
+    padding-left: 80px; }
+  .cloud-big__three {
+    top: 70%;
+    left: 70%; }
+
+.shadow {
+  width: 350px;
+  position: absolute;
+  bottom: -10px;
+  background: #000;
+  z-index: -1;
+  box-shadow: 0 0 25px 8px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 25px 8px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 0 25px 8px rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%; }
+
+.lawn-radius {
+  height: 10%;
+  background: #4c6c2d;
+  overflow: hidden;
+  position: relative; }
+  .lawn-radius__child {
+    width: 250%;
+    height: 600%;
+    position: absolute;
+    border-radius: 100%/50%;
+    background: #324A59;
+    bottom: 5%;
+    left: -10%; }
+
+.lawn {
+  height: 30%;
+  box-sizing: border-box;
+  background: #4c6c2d;
+  margin: 0;
+  border-color: #7cfc00; }
+
+#root, .wrap {
+  height: 100%; }
+
+.container {
+  width: 100%;
+  background: #324A59;
+  height: 70%;
+  position: relative; }
+
+.stars-container {
+  height: 100%;
+  width: 100%; }
+
+.white {
+  background: black; }
+
+.black {
+  background: white; }
+
+.font-26 {
+  font-size: 26px; }
+
+.input-instant {
+  text-align: center;
+  padding-left: 10px; }
+
+/*# sourceMappingURL=index.css.map */
